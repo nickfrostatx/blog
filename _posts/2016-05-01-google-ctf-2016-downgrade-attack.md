@@ -8,9 +8,10 @@ title: Google CTF 2016 - Opabina Regalis - Downgrade Attack
 This challenge also uses protocol buffers. We're using full duplex sockets to
 act as both a client and a server on the same connection. When we first connect,
 we are sent a request to ``/protected/not-secret``. The idea is to respond to
-this request with a 401 Basic response. We should get a request back with the
-base64-encoded username and password. We can take this password to make our own
-authenticated requset to ``/protected/secret``.
+this request with a 401 Unauthorized, giving a ``WWW-Authenticate: Basic``
+header. We should get back a request with an Authorization header, containing a
+base64-encoded username and password. We can then use this password to make our
+own authenticated request to ``/protected/secret``.
 
 Initial request from server:
 
