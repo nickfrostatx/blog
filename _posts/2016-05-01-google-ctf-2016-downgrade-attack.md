@@ -5,10 +5,12 @@ title: Google CTF 2016 - Opabina Regalis - Downgrade Attack
 > Following on from Opabina Regalis - Token Fetch, this challenge listens on
 > ``ssl-added-and-removed-here.ctfcompetition.com:20691``.
 
-This challenge also uses protocol buffers. After opening a connection, we get a
-request to ``/protected/not-secret``. The  idea is to send a response that asks
-for HTTP Basic auth, get the password, and use that password to request
-``protected/secret`` with Digest auth.
+This challenge also uses protocol buffers. We're using full duplex sockets to
+act as both a client and a server on the same connection. When we first connect,
+we are sent a request to ``/protected/not-secret``. The idea is to respond to
+this request with a 401 Basic response. We should get a request back with the
+base64-encoded username and password. We can take this password to make our own
+authenticated requset to ``/protected/secret``.
 
 Initial request from server:
 
