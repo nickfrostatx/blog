@@ -45,7 +45,7 @@ and we should have a valid Authorization header.
 {% highlight http %}
 GET /protected/secret HTTP/1.1
 User-Agent: opabina-regalis.go
-Digest username="google.ctf",realm="In the realm of hackers",nonce="b75493fdbd1f8f81",uri="/protected/secret",qop="auth",nc=a26312,cnonce="78cd3f62f0ae784e",response="d90872a589d396b0f3fc233c229c8d3b",opaque="b75493fdbd1f8f81"
+Authorization: Digest username="google.ctf",realm="In the realm of hackers",nonce="b75493fdbd1f8f81",uri="/protected/secret",qop="auth",nc=a26312,cnonce="78cd3f62f0ae784e",response="d90872a589d396b0f3fc233c229c8d3b",opaque="b75493fdbd1f8f81"
 {% endhighlight %}
 
 Send the exact same request back at the server, and it will auth us.
