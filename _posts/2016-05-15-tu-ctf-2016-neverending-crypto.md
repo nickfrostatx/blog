@@ -82,7 +82,7 @@ def match(s, messages):
     raise Exception('Couldn\'t find a match for %s' % repr(s))
 {% endhighlight %}
 
-## Level 4 - Variable-shift ROT
+## Level 4 - Caesar cipher
 
 This level is similar to Level 2, but each letter isn't necessarily shifted by
 13 places, the shift is chosen randomly. So we send `a`, and check the response
@@ -94,11 +94,12 @@ def variable_rot(enc, resp):
     return rot(enc, ord(resp) - ord(b'a'))
 {% endhighlight %}
 
-## Level 5 - Backwards
+## Level 5 - Atbash cipher
 
-Starting at the space character (`0x20`), the substitution for each letter
-works backwards. So `0x20` encodes to `0x20, 0x21` encodes to `0xfe`,
-`0x22` to `0xfd`, and so on.
+This is an [Atbash cipher](https://en.wikipedia.org/wiki/Atbash). Starting at
+the space character (`0x20`), the substitution for each letter works backwards.
+So `0x20` encodes to `0x20, 0x21` encodes to `0xfe`, `0x22` to `0xfd`, and so
+on.
 
 {% highlight python %}
 def backwards(enc):
@@ -108,15 +109,15 @@ def backwards(enc):
     return resp
 {% endhighlight %}
 
-## Level 6 -
+## Level 6 - Affine cipher
 
-This is another substitution cipher. We send over `0x20 0x21`, which are the
-first two printable ASCII characters. The mapping for these characters are
-similar to Level 5. Except we don't assign letters to adjacent letters. `a`
-might map to `z`, `b` to `x`, `c` to `v`, `d` to `t`, and so on. Notice that the
-mapped characters have two letters between them. The starting character,
-direction, and step size are random each time, so we'll have to get those from
-the response to our initial message.
+This level is an [Affine cipher](https://en.wikipedia.org/wiki/Affine_cipher).
+We send over `0x20 0x21`, which are the first two printable ASCII characters.
+The mapping for these characters are similar to Level 5. Except we don't assign
+letters to adjacent letters. `a` might map to `z`, `b` to `x`, `c` to `v`, `d`
+to `t`, and so on. Notice that the mapped characters have two letters between
+them. The starting character, direction, and step size are random each time, so
+we'll have to get those from the response to our initial message.
 
 {% highlight python %}
 def level6(enc, resp):
@@ -132,13 +133,14 @@ def level6(enc, resp):
     return result
 {% endhighlight %}
 
-## Level 7 - Weird ROT
+## Level 7 - Vigenère cipher
 
 In this level, every character is ROT shifted again. However, the shift factors
 are different depending on the position of the letter. Every third letter has
 the same shift. So the first letter may shift by 3 characters, the second by 25,
-the third by -7, the fourth by 3, the fifth by 25, and so on. We'll send `aaa`
-to see what each of these three shift values are.
+the third by -7, the fourth by 3, the fifth by 25, and so on. This is known as
+a [Vigenère cipher](https://en.wikipedia.org/wiki/Vigen%C3%A8re_cipher). We'll
+send `aaa` to see what each of these three shift values are.
 
 {% highlight python %}
 def weird_rot(enc, resp):
