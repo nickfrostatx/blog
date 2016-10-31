@@ -44,8 +44,6 @@ def read_chunk(f):
 
 with open('odrrere.png', 'rb') as f, open('odrrere1.png', 'wb') as out:
     out.write(f.read(8))
-    _, hdr, raw_hdr = read_chunk(f)
-    out.write(raw_hdr)
     blocks = []
     end = None
     while True:
