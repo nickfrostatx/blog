@@ -25,12 +25,9 @@ Here's the final image:
 ![Image](/assets/odrrere-final.png)
 
 {% highlight python %}
-from PIL import Image
 import binascii
-import itertools
 import struct
 import sys
-import zlib
 
 
 def read_chunk(f):
@@ -45,26 +42,29 @@ def read_chunk(f):
     return blkname, data, length_bytes + blkname + data + crc
 
 
-with open('odrrere.png', 'rb') as f:
-    with open('odrrere1.png', 'wb') as out:
-        out.write(f.read(8))
-        _, hdr, raw = read_chunk(f)
-        out.write(raw)
-        blocks = []
-        end = None
-        while True:
-            chunk = read_chunk(f)
-            if chunk is None:
-                break
-            blk, data, raw = chunk
-            if blk == b'IDAT':
-                blocks.append(raw)
-            elif blk == b'IEND':
-                end = raw
-            else:
-                out.write(raw)
-        for c in sys.argv[1]:
-            print(c)
-            out.write(blocks['0123456789abc'.index(c)])
-        out.write(end)
+with open('odrrere.png', 'rb') as f, open('odrrere1.png', 'wb') as out:
+    out.write(f.read(8))
+    _, hdr, raw_hdr = read_chunk(f)
+    out.write(raw_hdr)
+    blocks = []
+    end = None
+    while True:
+        chunk = read_chunk(f)
+        if chunk is None:
+            break
+        blk, data, raw = chunk
+        if blk == b'IDAT':
+            blocks.append(raw)
+        elif blk == b'IEND':
+            end = raw
+        else:
+            out.write(raw)
+    for c in sys.argv[1]:
+        print(c)
+        out.write(blocks['0123456789abc'.index(c)])
+    out.write(end)
+{% endhighlight %}
+
+{% highlight bash %}
+$ python odrre.python 0c849a67352b1
 {% endhighlight %}
