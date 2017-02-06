@@ -45,7 +45,8 @@ happens when we look at just the lower 4 bits of each position in hex?
 
 That looks like ASCII! It decodes to ``ALEXCTF{CATS_HIDE_SECRETS_DONT_THEY}``.
 
-Here's the script I used:
+Here's my script (it uses [Pillow](https://python-pillow.org/) to read the
+images):
 
 {% highlight python %}
 import binascii
